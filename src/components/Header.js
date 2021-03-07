@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Header extends Component {
-  render() {
-    return (
-      <header>
-        <p>CV Creator</p>
-      </header>
-    );
-  }
+function Header() {
+  return (
+    <header>
+      <p>CV Creator</p>
+    </header>
+  );
 }
 
 export default Header;
