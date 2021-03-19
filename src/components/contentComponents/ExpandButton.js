@@ -1,14 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BiCaretDown } from 'react-icons/bi';
 
-class ExpandButton extends Component {
-  render() {
-    return (
-      <button type="button" id="expand-button" className="cv-button">
-        <BiCaretDown />
-      </button>
-    );
-  }
+function ExpandButton() {
+  return (
+    <button type="button" id="expand-button" className="cv-button">
+      <BiCaretDown />
+    </button>
+  );
 }
 
 export default ExpandButton;

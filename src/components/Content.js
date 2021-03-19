@@ -1,253 +1,194 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PersonalInfo from './contentComponents/PersonalInfo';
 import EduInfo from './contentComponents/EduInfo';
 import WorkInfo from './contentComponents/WorkInfo';
 import SkillsInfo from './contentComponents/SkillsInfo';
 import Sheet from './contentComponents/Sheet';
 
-class Content extends Component {
-  constructor() {
-    super();
-    this.state = {
-      name: '',
-      birthDate: '',
-      birthDateFormatted: '',
-      eMail: '',
-      phoneNumber: '',
-      schools: [],
-      schoolName: '',
-      educationFrom: '',
-      educationTo: '',
-      jobs: [],
-      employer: '',
-      workFrom: '',
-      workTo: '',
-      skill: '',
-      skills: [],
-    };
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleBirthChange = this.handleBirthChange.bind(this);
-    this.handleEMailChange = this.handleEMailChange.bind(this);
-    this.handlePhoneChange = this.handlePhoneChange.bind(this);
-    this.handleSchoolNameChange = this.handleSchoolNameChange.bind(this);
-    this.handleEducationFromChange = this.handleEducationFromChange.bind(this);
-    this.handleEducationToChange = this.handleEducationToChange.bind(this);
-    this.submitEduInfo = this.submitEduInfo.bind(this);
-    this.removeSchool = this.removeSchool.bind(this);
-    this.handleEmployerChange = this.handleEmployerChange.bind(this);
-    this.handleWorkFromChange = this.handleWorkFromChange.bind(this);
-    this.handleWorkToChange = this.handleWorkToChange.bind(this);
-    this.submitWorkInfo = this.submitWorkInfo.bind(this);
-    this.removeJob = this.removeJob.bind(this);
-    this.handleSkillChange = this.handleSkillChange.bind(this);
-    this.submitSkill = this.submitSkill.bind(this);
-    this.removeSkill = this.removeSkill.bind(this);
+function Content() {
+  const [name, setName] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [birthDateFormatted, setBirthDateFormatted] = useState('');
+  const [eMail, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [schools, setSchools] = useState([]);
+  const [schoolName, setSchoolName] = useState('');
+  const [educationFrom, setEducationFrom] = useState('');
+  const [educationTo, setEducationTo] = useState('');
+  const [jobs, setJobs] = useState([]);
+  const [employer, setEmployer] = useState('');
+  const [workFrom, setWorkFrom] = useState('');
+  const [workTo, setWorkTo] = useState('');
+  const [skills, setSkills] = useState([]);
+  const [skill, setSkill] = useState('');
+
+  function handleNameChange(e) {
+    setName(e.target.value);
   }
-  handleNameChange = (e) => {
-    this.setState({
-      name: e.target.value,
-    });
-  };
-  handleBirthChange = (e) => {
-    this.setState({
-      birthDate: e.target.value,
-      birthDateFormatted: e.target.value.split('-').reverse().join('.'),
-    });
-  };
-  handleEMailChange = (e) => {
-    this.setState({
-      eMail: e.target.value,
-    });
-  };
-  handlePhoneChange = (e) => {
-    this.setState({
-      phoneNumber: e.target.value,
-    });
-  };
-  handleSchoolNameChange = (e) => {
-    this.setState({
-      schoolName: e.target.value,
-    });
-  };
-  handleEducationFromChange = (e) => {
-    this.setState({
-      educationFrom: e.target.value,
-    });
-  };
-  handleEducationToChange = (e) => {
-    this.setState({
-      educationTo: e.target.value,
-    });
-  };
-  submitEduInfo() {
-    let newEduFrom = this.state.educationFrom.split('-').reverse().join('.');
-    let newEduTo = this.state.educationTo.split('-').reverse().join('.');
+  function handleBirthChange(e) {
+    setBirthDate(e.target.value);
+    setBirthDateFormatted(e.target.value.split('-').reverse().join('.'));
+  }
+  function handleEMailChange(e) {
+    setEmail(e.target.value);
+  }
+  function handlePhoneChange(e) {
+    setPhoneNumber(e.target.value);
+  }
+  function handleSchoolNameChange(e) {
+    setSchoolName(e.target.value);
+  }
+  function handleEducationFromChange(e) {
+    setEducationFrom(e.target.value);
+  }
+  function handleEducationToChange(e) {
+    setEducationTo(e.target.value);
+  }
+  function submitEduInfo() {
+    let newEduFrom = educationFrom.split('-').reverse().join('.');
+    let newEduTo = educationTo.split('-').reverse().join('.');
     const obj = {
-      name: this.state.schoolName,
+      name: schoolName,
       dateFrom: newEduFrom,
       dateTo: newEduTo,
     };
-    this.setState({
-      schools: this.state.schools.concat(obj),
-      schoolName: '',
-      educationTo: '',
-      educationFrom: '',
-    });
+    setSchools(schools.concat(obj));
+    setSchoolName('');
+    setEducationFrom('');
+    setEducationTo('');
     const ul = document.querySelector('#schools-ul');
     if (ul.classList.contains('hidden')) {
       ul.classList.remove('hidden');
     }
   }
-  removeSchool = (e) => {
+  function removeSchool(e) {
     const buttons = document.querySelectorAll('.remove-button');
     const index = Array.from(buttons).indexOf(e.currentTarget);
-    const newSchoolsList = this.state.schools.filter(
-      (school) => this.state.schools.indexOf(school) !== index
+    const newSchoolsList = schools.filter(
+      (school) => schools.indexOf(school) !== index
     );
-    this.setState({
-      schools: newSchoolsList,
-    });
+    setSchools(newSchoolsList);
     if (newSchoolsList.length === 0) {
       const ul = document.querySelector('#schools-ul');
       ul.classList.add('hidden');
     }
-  };
-  handleEmployerChange = (e) => {
-    this.setState({
-      employer: e.target.value,
-    });
-  };
-  handleWorkFromChange = (e) => {
-    this.setState({
-      workFrom: e.target.value,
-    });
-  };
-  handleWorkToChange = (e) => {
-    this.setState({
-      workTo: e.target.value,
-    });
-  };
-  submitWorkInfo() {
-    const newWorkFrom = this.state.workFrom.split('-').reverse().join('.');
-    const newWorkTo = this.state.workTo.split('-').reverse().join('.');
+  }
+  function handleEmployerChange(e) {
+    setEmployer(e.target.value);
+  }
+  function handleWorkFromChange(e) {
+    setWorkFrom(e.target.value);
+  }
+  function handleWorkToChange(e) {
+    setWorkTo(e.target.value);
+  }
+  function submitWorkInfo() {
+    const newWorkFrom = workFrom.split('-').reverse().join('.');
+    const newWorkTo = workTo.split('-').reverse().join('.');
     const obj = {
-      name: this.state.employer,
+      name: employer,
       dateFrom: newWorkFrom,
       dateTo: newWorkTo,
     };
-    this.setState({
-      jobs: this.state.jobs.concat(obj),
-      employer: '',
-      workTo: '',
-      workFrom: '',
-    });
+    setJobs(jobs.concat(obj));
+    setEmployer('');
+    setWorkFrom('');
+    setWorkTo('');
     const ul = document.querySelector('#jobs-ul');
     if (ul.classList.contains('hidden')) {
       ul.classList.remove('hidden');
     }
   }
-  removeJob = (e) => {
+  function removeJob(e) {
     const buttons = document.querySelectorAll('.remove-button');
     const index = Array.from(buttons).indexOf(e.currentTarget);
-    const newJobsList = this.state.jobs.filter(
-      (job) => this.state.jobs.indexOf(job) !== index
-    );
-    this.setState({
-      jobs: newJobsList,
-    });
+    const newJobsList = jobs.filter((job) => jobs.indexOf(job) !== index);
+    setJobs(newJobsList);
     if (newJobsList.length === 0) {
       const ul = document.querySelector('#jobs-ul');
       ul.classList.add('hidden');
     }
-  };
-  handleSkillChange = (e) => {
-    this.setState({
-      skill: e.target.value,
-    });
-  };
-  submitSkill = (e) => {
+  }
+  function handleSkillChange(e) {
+    setSkill(e.target.value);
+  }
+  function submitSkill(e) {
     if (e.code === 'Enter') e.preventDefault();
-    if (this.state.skill !== '') {
-      this.setState({
-        skills: this.state.skills.concat(this.state.skill),
-        skill: '',
-      });
+    if (skill !== '') {
+      setSkills(skills.concat(skill));
+      setSkill('');
       const ul = document.querySelector('#skills-ul');
       if (ul.classList.contains('hidden')) {
         ul.classList.remove('hidden');
       }
     }
-  };
-  removeSkill = (e) => {
+  }
+  function removeSkill(e) {
     const buttons = document.querySelectorAll('.remove-button');
     const index = Array.from(buttons).indexOf(e.currentTarget);
-    const newSkillsList = this.state.skills.filter(
-      (skill) => this.state.skills.indexOf(skill) !== index
+    const newSkillsList = skills.filter(
+      (skill) => skills.indexOf(skill) !== index
     );
-    this.setState({
-      skills: newSkillsList,
-    });
+    setSkills(newSkillsList);
     if (newSkillsList.length === 0) {
       const ul = document.querySelector('#skills-ul');
       ul.classList.add('hidden');
     }
-  };
-  render() {
-    return (
-      <div id="content">
-        <div id="cv-info">
-          <PersonalInfo
-            name={this.state.name}
-            birthDate={this.state.birthDate}
-            eMail={this.state.eMail}
-            phoneNumber={this.state.phoneNumber}
-            handleNameChange={this.handleNameChange}
-            handleBirthChange={this.handleBirthChange}
-            handleEMailChange={this.handleEMailChange}
-            handlePhoneChange={this.handlePhoneChange}
-          />
-          <EduInfo
-            schools={this.state.schools}
-            schoolName={this.state.schoolName}
-            educationFrom={this.state.educationFrom}
-            educationTo={this.state.educationTo}
-            handleSchoolNameChange={this.handleSchoolNameChange}
-            handleEducationFromChange={this.handleEducationFromChange}
-            handleEducationToChange={this.handleEducationToChange}
-            submitEduInfo={this.submitEduInfo}
-            removeSchool={this.removeSchool}
-          />
-          <WorkInfo
-            jobs={this.state.jobs}
-            employer={this.state.employer}
-            workFrom={this.state.workFrom}
-            workTo={this.state.workTo}
-            handleEmployerChange={this.handleEmployerChange}
-            handleWorkFromChange={this.handleWorkFromChange}
-            handleWorkToChange={this.handleWorkToChange}
-            submitWorkInfo={this.submitWorkInfo}
-            removeJob={this.removeJob}
-          />
-          <SkillsInfo
-            skill={this.state.skill}
-            skills={this.state.skills}
-            handleSkillChange={this.handleSkillChange}
-            submitSkill={this.submitSkill}
-            removeSkill={this.removeSkill}
-          />
-        </div>
-        <Sheet
-          name={this.state.name}
-          birthDate={this.state.birthDateFormatted}
-          eMail={this.state.eMail}
-          phoneNumber={this.state.phoneNumber}
-          schools={this.state.schools}
-          jobs={this.state.jobs}
-          skills={this.state.skills}
+  }
+  return (
+    <div id="content">
+      <div id="cv-info">
+        <PersonalInfo
+          name={name}
+          birthDate={birthDate}
+          eMail={eMail}
+          phoneNumber={phoneNumber}
+          handleNameChange={handleNameChange}
+          handleBirthChange={handleBirthChange}
+          handleEMailChange={handleEMailChange}
+          handlePhoneChange={handlePhoneChange}
+        />
+        <EduInfo
+          schools={schools}
+          schoolName={schoolName}
+          educationFrom={educationFrom}
+          educationTo={educationTo}
+          handleSchoolNameChange={handleSchoolNameChange}
+          handleEducationFromChange={handleEducationFromChange}
+          handleEducationToChange={handleEducationToChange}
+          submitEduInfo={submitEduInfo}
+          removeSchool={removeSchool}
+        />
+        <WorkInfo
+          jobs={jobs}
+          employer={employer}
+          workFrom={workFrom}
+          workTo={workTo}
+          handleEmployerChange={handleEmployerChange}
+          handleWorkFromChange={handleWorkFromChange}
+          handleWorkToChange={handleWorkToChange}
+          submitWorkInfo={submitWorkInfo}
+          removeJob={removeJob}
+        />
+        <SkillsInfo
+          skill={skill}
+          skills={skills}
+          handleSkillChange={handleSkillChange}
+          submitSkill={submitSkill}
+          removeSkill={removeSkill}
         />
       </div>
-    );
-  }
+      <Sheet
+        name={name}
+        birthDate={birthDateFormatted}
+        eMail={eMail}
+        phoneNumber={phoneNumber}
+        schools={schools}
+        jobs={jobs}
+        skills={skills}
+      />
+    </div>
+  );
 }
 
 export default Content;
